@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.android.popularmovies.MovieDetailActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_movie_backdrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/poster_content_description"/>
+
+        <ImageView
+            android:id="@+id/iv_movie_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_movie_backdrop"
+            android:adjustViewBounds="true"
+            android:paddingEnd="@dimen/movie_detail_padding"
+            android:paddingLeft="@dimen/movie_detail_padding"
+            android:paddingRight="@dimen/movie_detail_padding"
+            android:paddingStart="@dimen/movie_detail_padding"
+            android:paddingTop="@dimen/movie_detail_padding"
+            android:contentDescription="@string/backdrop_content_description"/>
+
+        <LinearLayout
+            android:id="@+id/movie_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_movie_backdrop"
+            android:layout_toEndOf="@+id/iv_movie_detail"
+            android:layout_toRightOf="@+id/iv_movie_detail"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/no_padding"
+            android:paddingStart="@dimen/no_padding"
+            android:paddingEnd="@dimen/movie_detail_padding"
+            android:paddingRight="@dimen/movie_detail_padding"
+            android:paddingTop="@dimen/movie_detail_padding">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/movie_title"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+            <TextView
+                android:id="@+id/tv_release_date_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/release_date_label" />
+
+            <TextView
+                android:id="@+id/tv_release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/release_date" />
+
+            <TextView
+                android:id="@+id/tv_user_rating_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_rating_label" />
+
+            <TextView
+                android:id="@+id/tv_user_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/user_rating" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_details"
+            android:paddingLeft="@dimen/movie_detail_padding"
+            android:paddingStart="@dimen/movie_detail_padding"
+            android:paddingRight="@dimen/no_padding"
+            android:paddingEnd="@dimen/no_padding"
+            android:paddingTop="@dimen/movie_detail_padding"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_plot_synopsis_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plot_synopsis_label"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+            <TextView
+                android:id="@+id/tv_plot_synopsis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/plot_synopsis" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>
