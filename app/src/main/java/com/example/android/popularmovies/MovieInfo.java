@@ -5,9 +5,6 @@ import android.os.Parcelable;
 
 public class MovieInfo implements Parcelable {
 
-    private static final String POSTER_PATH_BASE_URL = "http://image.tmdb.org/t/p/";
-    private static final String POSTER_SIZE = "w185/";
-    private static final String BACKDROP_SIZE = "w342/";
     private int id;
     private String title;
     private String posterPath;
@@ -16,22 +13,14 @@ public class MovieInfo implements Parcelable {
     private int userRating;
     private String releaseDate;
 
-    public MovieInfo(int id, String title, String posterPathEnd, String backdropPathEnd, String plotSynopsis, int userRating, String releaseDate) {
+    public MovieInfo(int id, String title, String posterPath, String backdropPath, String plotSynopsis, int userRating, String releaseDate) {
         this.id = id;
         this.title = title;
-        this.posterPath = createPosterPath(posterPathEnd);
-        this.backdropPath = createBackdropPath(backdropPathEnd);
+        this.posterPath = posterPath;
+        this.backdropPath = backdropPath;
         this.plotSynopsis = plotSynopsis;
         this.userRating = userRating;
         this.releaseDate = releaseDate;
-    }
-
-    private String createPosterPath(String posterPathEnd) {
-        return POSTER_PATH_BASE_URL + POSTER_SIZE + posterPathEnd;
-    }
-
-    private String createBackdropPath(String backdropPathEnd) {
-        return POSTER_PATH_BASE_URL + BACKDROP_SIZE + backdropPathEnd;
     }
 
     public int getId() {

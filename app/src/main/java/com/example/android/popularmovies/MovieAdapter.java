@@ -1,6 +1,7 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.android.popularmovies.data.MoviesContract;
 import com.squareup.picasso.Picasso;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
+    private static final String TAG = MovieAdapter.class.getSimpleName();
     private static final boolean shouldAttachToParentImmediately = false;
     private MovieInfo[] mMovieInfoData;
     public interface MovieAdapterOnClickHandler {
@@ -85,5 +88,50 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public void setMovieData(MovieInfo[] movieInfoData) {
         mMovieInfoData = movieInfoData;
         notifyDataSetChanged();
+    }
+
+    /**
+     * When data changes and a re-query occurs, this function sets mMovieInfoData
+     * This is only called for the favorites view
+     */
+    public void setMovieDataFromCursor(Cursor cursor) {
+        if(null != cursor) {
+            int count = cursor.getCount();
+
+            if (count > 0) {
+                // Indices
+                int idIndex = cursor.getColumnIndex(MoviesContract.MoviesEntry._ID);
+                int movieIdIndex = cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_MOVIE_ID);
+                int titleIndex = cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_TITLE);
+                int posterPathIndex = cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_POSTER_PATH);
+                int backdropPathIndex = cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_BACKDROP_PATH);
+                int plotSynopsisIndex = cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_PLOT_SYNOPSIS);
+                int userRatingIndex = cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_USER_RATING);
+                int releaseDateIndex = cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE);
+
+                mMovieInfoData = new MovieInfo[count];
+                int i = 0;
+                while (cursor.moveToNext()) {
+                    // Determine the values of the wanted data
+                    int id = cursor.getInt(idIndex);
+                    String movieIdStr = cursor.getString(movieIdIndex);
+                    int movieId = Integer.parseInt(movieIdStr);
+                    String title = cursor.getString(titleIndex);
+                    String posterPath = cursor.getString(posterPathIndex);
+                    String backdropPath = cursor.getString(backdropPathIndex);
+                    String plotSynopsis = cursor.getString(plotSynopsisIndex);
+                    String userRatingStr = cursor.getString(userRatingIndex);
+                    int userRating = Integer.parseInt(userRatingStr);
+                    String releaseDate = cursor.getString(releaseDateIndex);
+
+                    //Set values
+                    MovieInfo movieInfo = new MovieInfo(movieId, title, posterPath, backdropPath, plotSynopsis, userRating, releaseDate);
+                    mMovieInfoData[i] = movieInfo;
+                    i++;
+                }
+                notifyDataSetChanged();
+            }
+            cursor.close();
+        }
     }
 }
