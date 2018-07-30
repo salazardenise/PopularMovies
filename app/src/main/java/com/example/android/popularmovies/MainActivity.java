@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.android.popularmovies.adapter.MovieAdapter;
 import com.example.android.popularmovies.data.MoviesContract;
 import com.example.android.popularmovies.utilities.MovieJsonUtils;
 import com.example.android.popularmovies.utilities.NetworkUtils;
@@ -29,8 +31,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String CURRENT_OPTION_KEY = "option_key";
+    private static final String KEY_FOR_LAYOUT_MANAGER_STATE = "KeyForLayoutManagerState";
     private MovieAdapter mMovieAdapter;
     private RecyclerView mMoviesGrid;
+    private Parcelable mSavedRecyclerLayoutState;
     private static final String option_popular = "popular";
     private static final String option_top_rated = "top_rated";
     private static final String option_favorites = "favorites";
@@ -74,6 +78,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             if (savedInstanceState.containsKey(CURRENT_OPTION_KEY)) {
                 current_option = savedInstanceState.getString(CURRENT_OPTION_KEY);
             }
+            // LayoutManager pre-built restore api, https://stackoverflow.com/questions/27816217/how-to-save-recyclerviews-scroll-position-using-recyclerview-state
+            if (savedInstanceState.containsKey(KEY_FOR_LAYOUT_MANAGER_STATE)) {
+                Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(KEY_FOR_LAYOUT_MANAGER_STATE);
+                mMoviesGrid.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+                mSavedRecyclerLayoutState = savedRecyclerLayoutState;
+            } else {
+                mSavedRecyclerLayoutState = null;
+            }
         } else {
             current_option = option_popular;
         }
@@ -101,6 +113,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(CURRENT_OPTION_KEY, current_option);
+        // LayoutManager pre-built save api, https://stackoverflow.com/questions/27816217/how-to-save-recyclerviews-scroll-position-using-recyclerview-state
+        mSavedRecyclerLayoutState = mMoviesGrid.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(KEY_FOR_LAYOUT_MANAGER_STATE, mSavedRecyclerLayoutState);
     }
 
     @Override
@@ -163,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 errorMessage.setVisibility(View.INVISIBLE);
                 mMovieAdapter.setMovieData(movieInfoData);
                 mMoviesGrid.setVisibility(View.VISIBLE);
+                mMoviesGrid.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
             } else {
                 errorMessage.setVisibility(View.VISIBLE);
                 mMoviesGrid.setVisibility(View.INVISIBLE);
@@ -230,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 noFavoritesMessage.setVisibility(View.INVISIBLE);
                 mMovieAdapter.setMovieDataFromCursor(cursor);
                 mMoviesGrid.setVisibility(View.VISIBLE);
+                mMoviesGrid.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
             } else {
                 noFavoritesMessage.setVisibility(View.VISIBLE);
                 mMoviesGrid.setVisibility(View.INVISIBLE);

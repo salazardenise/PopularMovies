@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.android.popularmovies.MovieInfo;
+import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.MoviesContract;
 import com.squareup.picasso.Picasso;
 
@@ -23,7 +25,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     private MovieAdapterOnClickHandler mClickHandler;
 
     // data is passed into the constructor
-    MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
+    public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
         this.mClickHandler = clickHandler;
     }
 

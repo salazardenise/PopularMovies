@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.Video;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapterViewHolder> {
 
@@ -19,7 +22,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     private VideoAdapterOnClickHandler mClickHandler;
 
     // data is passed into the constructor
-    VideoAdapter(VideoAdapterOnClickHandler clickHandler) {
+    public VideoAdapter(VideoAdapterOnClickHandler clickHandler) {
         this.mClickHandler = clickHandler;
     }
 

@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.popularmovies.adapter.ReviewAdapter;
+import com.example.android.popularmovies.adapter.VideoAdapter;
 import com.example.android.popularmovies.data.MoviesContract;
 import com.example.android.popularmovies.utilities.MovieJsonUtils;
 import com.example.android.popularmovies.utilities.NetworkUtils;
@@ -61,7 +63,6 @@ public class MovieDetailActivity extends AppCompatActivity implements VideoAdapt
 
         Intent intentThatStartedThisActivity = getIntent();
         if (intentThatStartedThisActivity.hasExtra(MOVIE_INFO)) {
-            //Log.i(TAG, "Detail Activity has Extra");
             mSelectedMovie = getIntent().getParcelableExtra(MOVIE_INFO); // Parcelable
             setUp();
         }
@@ -258,19 +259,13 @@ public class MovieDetailActivity extends AppCompatActivity implements VideoAdapt
 
     public void onClickAddFavorite(View view) {
         if (mSelectedMovie == null) return;
-
         if (isFavorite()) {
             // unfavorite it
             Uri itemUri = MoviesContract.MoviesEntry.CONTENT_URI;
             String mSelection = MoviesContract.MoviesEntry.COLUMN_MOVIE_ID + "=?";
             String movieIdStr = String.valueOf(mSelectedMovie.getId());
             String[] mSelectionArgs = new String[]{movieIdStr};
-
             int deleted = getContentResolver().delete(itemUri, mSelection, mSelectionArgs);
-            //if (deleted != 0) {
-            //    Toast.makeText(getBaseContext(), itemUri.toString() + " deleted!", Toast.LENGTH_LONG).show();
-            //}
-
         } else {
             // favorite it
             ContentValues cv = new ContentValues();
@@ -282,9 +277,6 @@ public class MovieDetailActivity extends AppCompatActivity implements VideoAdapt
             cv.put(MoviesContract.MoviesEntry.COLUMN_USER_RATING, mSelectedMovie.getUserRating());
             cv.put(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE, mSelectedMovie.getReleaseDate());
             Uri insertUri = getContentResolver().insert(MoviesContract.MoviesEntry.CONTENT_URI, cv);
-            //if (insertUri != null) {
-            //    Toast.makeText(getBaseContext(), insertUri.toString() + " added!", Toast.LENGTH_LONG).show();
-            //}
         }
         finish(); // this tells us this Activity is over and to return to MainActivity
     }
